@@ -6,7 +6,7 @@ import sys
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Literal
 
 
 class Logger:
@@ -34,13 +34,14 @@ class Logger:
         self,
         name: str,
         level: str = "INFO",
+        *,
         console_output: bool = True,
         file_output: str | None = None,
         json_format: bool = False,
         max_bytes: int = 10485760,  # 10MB
         backup_count: int = 5,
         date_format: str = "%Y-%m-%d %H:%M:%S",
-    ):
+    ) -> None:
         """Initialize the logger.
 
         Args:
@@ -71,14 +72,14 @@ class Logger:
         if file_output:
             self._add_file_handler(file_output, max_bytes, backup_count)
 
-    def _add_console_handler(self):
+    def _add_console_handler(self) -> None:
         """Add console handler for stdout output."""
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setLevel(self.logger.level)
         console_handler.setFormatter(self._get_formatter())
         self.logger.addHandler(console_handler)
 
-    def _add_file_handler(self, filepath: str, max_bytes: int, backup_count: int):
+    def _add_file_handler(self, filepath: str, max_bytes: int, backup_count: int) -> None:
         """Add rotating file handler."""
         # Ensure directory exists
         Path(filepath).parent.mkdir(parents=True, exist_ok=True)
@@ -103,40 +104,73 @@ class Logger:
         )
         return logging.Formatter(format_string, datefmt=self.date_format)
 
-    def debug(self, message: str, **kwargs):
+    def debug(self, message: str, **kwargs) -> None:
         """Log debug message."""
         self.logger.debug(message, extra=kwargs)
 
-    def info(self, message: str, **kwargs):
+    def info(self, message: str, **kwargs) -> None:
         """Log info message."""
         self.logger.info(message, extra=kwargs)
 
-    def warning(self, message: str, **kwargs):
+    def warning(self, message: str, **kwargs) -> None:
         """Log warning message."""
         self.logger.warning(message, extra=kwargs)
 
-    def error(self, message: str, exc_info: bool = False, **kwargs):
+    def error(self, message: str, exc_info: bool = False, **kwargs) -> None:
         """Log error message."""
         self.logger.error(message, exc_info=exc_info, extra=kwargs)
 
-    def critical(self, message: str, exc_info: bool = False, **kwargs):
+    def critical(self, message: str, exc_info: bool = False, **kwargs) -> None:
         """Log critical message."""
         self.logger.critical(message, exc_info=exc_info, extra=kwargs)
 
-    def exception(self, message: str, **kwargs):
+    def exception(self, message: str, **kwargs) -> None:
         """Log exception with traceback."""
         self.logger.exception(message, extra=kwargs)
 
-    def set_level(self, level: str):
+    def set_level(
+            self,
+            level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        ) -> None:
         """Change the logging level dynamically."""
-        new_level = self.LEVELS.get(level.upper(), logging.INFO)
+        if level.upper() not in self.LEVELS:
+            available = ", ".join(self.LEVELS.keys())
+            msg = f"Invalid log level '{level}'. Must be one of: {available}"
+            raise ValueError(msg)
+
+        new_level = self.LEVELS[level.upper()]
         self.logger.setLevel(new_level)
         for handler in self.logger.handlers:
             handler.setLevel(new_level)
 
+        self.info(f"Log level changed to {level.upper()}")
+
+    def get_level(self) -> str:
+        """Get the current logging level.
+
+        Returns:
+            Current log level as string (e.g., 'INFO', 'DEBUG')
+
+        """
+        level_num = self.logger.level
+        for name, num in self.LEVELS.items():
+            if num == level_num:
+                return name
+        return "NOTSET"
+
+    @property
+    def level(self) -> str:
+        """Get current log level as a property."""
+        return self.get_level()
+
+    @level.setter
+    def level(self, value: str):
+        """Set log level using property assignment."""
+        self.set_level(value)
+
     def add_context(self, **context) -> "LoggerContext":
         """Add context information to subsequent log messages.
-        
+
         Usage:
             with logger.add_context(user_id=123, request_id='abc'):
                 logger.info('Processing request')
@@ -177,16 +211,17 @@ class JsonFormatter(logging.Formatter):
 class LoggerContext:
     """Context manager for adding contextual information to logs."""
 
-    def __init__(self, logger: Logger, context: dict[str, Any]):
+    def __init__(self, logger: Logger, context: dict[str, Any]) -> None:
+        """Initialize the context manager."""
         self.logger = logger
         self.context = context
         self.old_factory = None
 
-    def __enter__(self):
+    def __enter__(self) -> "LoggerContext":
         """Enter context and add context data to log records."""
         self.old_factory = logging.getLogRecordFactory()
 
-        def record_factory(*args, **kwargs):
+        def record_factory(*args, **kwargs) -> logging.LogRecord:
             record = self.old_factory(*args, **kwargs)
             if not hasattr(record, "extra_fields"):
                 record.extra_fields = {}
@@ -196,7 +231,7 @@ class LoggerContext:
         logging.setLogRecordFactory(record_factory)
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         """Exit context and restore original factory."""
         if self.old_factory:
             logging.setLogRecordFactory(self.old_factory)

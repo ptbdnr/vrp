@@ -48,5 +48,5 @@ class UpperBoundCalculator:
         self.logger.debug(f"Maximum distance between any two nodes: {max_distance}")
         self.logger.debug(f"Total number of nodes (n): {n}")
         upper_bound = max_distance * n * (max_distance + 1)
-        self.logger.info(f"Calculated upper bound: {upper_bound}")
+        self.logger.debug(f"Calculated upper bound: {upper_bound}")
         return upper_bound

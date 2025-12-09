@@ -50,5 +50,5 @@ class LowerBoundCalculator:
         self.logger.debug(f"Maximum distance between any two nodes: {max_distance}")
         self.logger.debug(f"Total number of nodes (n): {n}")
         lower_bound = min_distance * n * (max_distance + 1)
-        self.logger.info(f"Calculated lower bound: {lower_bound}")
+        self.logger.debug(f"Calculated lower bound: {lower_bound}")
         return lower_bound

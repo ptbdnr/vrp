@@ -1,8 +1,6 @@
-# Vehicle Routing Problem
+# Travelling Salesman Problem with Sequence Constraints and Non-Linear Objective Function
 
-## Travelling Salesman Problem with Sequence Constraints and Non-Linear Objective Function
-
-### Problem Definition
+## Problem Definition
 
 Given a set of nodes $𝑁 = {0,1,2, … , 𝑛, 𝑛 + 1}$ and the distances between each pair of nodes $𝑑_{𝑖𝑗}$, $𝑖, 𝑗 ∈ 𝑁$, then a feasible route should:
 
@@ -27,7 +25,7 @@ Find the route that minimises the function: $𝐿 ∙ 𝛥 + 𝐷$, where
 
 For instance, if a route consists of node pairs: (0,3), (3,1), (1,2), (2,4), (4,5) with respective node pair distances: $𝑑_{03} = 10$, $𝑑_{31} = 5$, $𝑑_{12} = 9$, $𝑑_{24} = 7$, $𝑑_{45} = 8$, then $𝛥 = 𝑑_{03} − 𝑑_{31} = 5$ and the total distance is equal to 39. Note that in the latter example $𝑛 = 4$.
 
-### Instructions
+## Instructions
 
 * Design and code a program that can read a CSV file of the form: `Node_ID,x-cor,y-cor`
 
@@ -52,7 +50,7 @@ Delta Value: 12.38
     * (Q4) How would you change your method / program to deal with dynamic arrival of requests?
     * (Q5) What aspects of the problem could be enhanced to include stochastic information?
 
-### Assumptions
+## Assumptions
 
 * node IDs are integers
 * list of node IDs always start with "0" (text) or 0 (numeric)
@@ -60,14 +58,14 @@ Delta Value: 12.38
 * undirected distances, the distance between any two nodes is symetric, i.e. $d_{ij} = d_{ji}$
 * the basic problem can be deployed on arbitrary hardware, i.e. no constraints on memory and compute.
 
-### Observations
+## Observations
 
 * complete distance matrix requires $n²/2$ memory, where $n+1$ is the number of nodes
 * not all nodes can connect to the terminating $n+1$
 * $𝐿$ is static in the basic problem, but may change if a node is added (subject to the existing and new coordinates)
 * the problem is reducable to the well-known TSP (by simplifying the objective function and removing constraints), TSP has $O(n!)$ feasible solutions, and known to be NP-hard, i.e., in the worst case the solution requires $O(n!)$ time. To solve real-size problems under time-constraint, we have to trade accuracy (guarantee for optimal solution) for speed.
 
-### Backlog
+## Backlog
 
 * Construction Heuristic: Enumerate to find optimal solution
 * Metaheuristics: GA/SA/TS/ACO/VNS
@@ -77,6 +75,19 @@ Delta Value: 12.38
 * distributed population evaluation: distribute computation on multiple compute resources, for example, move distance calculations to GPU cluster
 * identifying dominance based on distance can be accelerated: instead of computing euclidean (4x read operations, 3x multiplications, 1x addition), it can be terminated early if partial computation (2x read op + 1x multiplication) proves sufficient data for dominance
 
-### Out of scope
+## Out of scope
 
 * the objective function should be re-considered if the stochastic information refers to existence of a node or its coordinate
+
+## Developer Guide
+
+```shell
+# add missing package
+poetry add {package_name}
+# install packages
+poetry istall
+# run Python in terminal
+poetry run python src/main.py
+# VSCode >Python: Select Interpreter, run code below and enter to path
+poetry env info --path | pbcopy
+```

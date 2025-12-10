@@ -94,7 +94,7 @@ class LocalSearchImprover:
                     best_value=route_value,
                     improved=new_route_value < route_value,
                 )
-                if new_route_value <= route_value:  # Accept both improvements and equal solutions
+                if new_route_value < route_value:
                     self.logger.debug(
                         f"Improved route found with objective value {new_route_value} "
                         f"using operation {operation.__class__.__name__}.",

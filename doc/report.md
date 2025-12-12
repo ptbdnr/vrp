@@ -2,9 +2,11 @@
 
 ## 1. Summary
 
-This document present a solution approach to solve the "Problem" presented. First, we establish lower and upper bounds to frame solution quality, then generate feasible routes via construction heuristics. Next, iterative improvements leverage a library of neighbourhood operators, used by local search, simulated annealing (SA), and adaptive large neighbourhood search (ALNS). SA and ALNS can escape local optima. A monitoring and reporting layer tracks progress. Numerical results are presented. Finally, we highlight future refinements.
+This document outlines a solution approach to the "problem" (see README.md). First, we establish lower and upper bounds to frame solution quality, then generate feasible routes via construction heuristics. Next, iterative improvements leverage neighbourhood operators used by local search, simulated annealing (SA), and adaptive large neighbourhood search (ALNS). SA and ALNS can escape local optima. ALNS is implemented with the `alns` package (https://pypi.org/project/alns/). A monitoring and reporting layer tracks progress.
 
-Notably, within 10 seconds all implentation can provide a feasible solution. Surprisingly, the greedy local search often yielded the best solution identified. 
+Numerical results are presented. Notably, within 10 seconds all implementations can provide a feasible solution. Surprisingly, greedy local search often yields the best solution identified.
+
+Finally, future work suggestions are listed.
 
 ## 2. Architecture & Design
 
@@ -33,14 +35,14 @@ This catalog summarises the major subsystems, their responsibilities, and the cl
 
 ### 2.3 Data Flow
 
-The numbered steps outline the runtime pipeline from raw inputs to exported results, showing how intermediate products feed subsequent heuristics and reporting.
+The numbered steps below outline the runtime pipeline from raw inputs to exported results, showing how intermediate products feed subsequent heuristics and reporting.
 
-1. Input parser and validator
-2. Data managers
-3. Lower/upper bound estimation
-4. Construction heuristic
-5. Iterative optimisation (local search, simulated annealing, adaptive large neighbourhood search)
-6. Route exporter
+1. Parse and validate input
+2. Construct data managers
+3. Estimate lower and upper bounds
+4. Construct initial feasible solution
+5. Iteratively improve the solution (via local search, simulated annealing, or adaptive large neighbourhood search)
+6. Export results and generate plots
 
 ---
 
@@ -62,11 +64,11 @@ The construction phase quickly produces feasible starting tours whose structure 
 
 The naïve sequencer visits even-indexed nodes (sorted) before the odd ones, producing a feasible baseline tour that respects the problem's ordering constraints. This straightforward pass provides a quick starting point.
 
-Pseudo-code:
+Pseudocode:
 
 ```text
 INPUT  nodes
-OUTPUT sequencex
+OUTPUT sequence
 
 origin ← nodes[0]
 destination ← nodes[-1]
@@ -79,7 +81,7 @@ RETURN origin + sort_decreasing(even_nodes) + sort_increasing(odd_nodes) + desti
 
 ### 3.3 Metaheuristics
 
-After constructing an initial tour, iterative metaheuristics explore the solution neighbourhood to indetify improvements.
+After constructing an initial tour, iterative metaheuristics explore the solution neighbourhood to identify improvements.
 
 #### 3.3.1 Local Search
 
@@ -99,9 +101,9 @@ The local search walks the neighbourhood using a first-improvement policy.
 
 #### 3.3.2 Simulated Annealing (SA)
 
-Simulated annealing escapes local optima through probabilistic acceptance guided by a geometric cooling schedule ($T_{t+1} = T_t \cdot \text{cooling\_rate}$).
+Simulated annealing escapes local optima through probabilistic acceptance guided by a geometric cooling schedule ( $T_{t+1} = T_{t} \cdot \text{cooling\_rate}$ ).
 
-**Acceptance criterion:** Metropolis rule ($e^{-\Delta/T}$) determines whether to accept worse moves (improvements are allways accepted)
+**Acceptance criterion:** Metropolis rule ($e^{-\Delta/T}$) determines whether to accept worse moves (improvements are always accepted)
 
 **Termination:** the algorithm iterates until a time, iteration, or lower-bound threshold is met.
 
@@ -110,6 +112,8 @@ Simulated annealing escapes local optima through probabilistic acceptance guided
 **Operators used:** randomly select 2-Opt, 3-Opt, or Relocate while maintaining feasibility
 
 #### 3.3.3 Adaptive Large Neighbourhood Search (ALNS)
+
+ALNS is implemented using the package: [alns](https://pypi.org/project/alns/)
 
 ALNS combines late-acceptance hill climbing with a portfolio of destroy and repair operators to mutate feasible tours. A roulette-wheel scheme with adaptive weights selects operators proportionally to their historical performance.
 
@@ -145,7 +149,7 @@ Structured node and route keep downstream tooling consistent. While cached dista
 
 ## 5. Experimental Results
 
-Available datasets have 20, 30, 40, 50 and 60 nodes. Deterministic seeding was used for reproducibility. Termination was set to 10sec or 10.000 iterations.
+Available datasets have 20, 30, 40, 50, and 60 nodes. Deterministic seeding was used for reproducibility. Termination was set to 10 seconds or 10,000 iterations.
 
 ### 5.1 Assumptions
 
@@ -163,8 +167,8 @@ All solutions start from the same seed, the graphs show the output after the fir
 <img src="./results/i20/SimulatedAnnealingImprover_iter.png" alt="SA" width="30%"/>
 <img src="./results/i20/ALNSWrapper_iter.png" alt="ALNS" width="30%"/>
 
-Interestingly ALNS cannot find improvements.
-Note that Local Search has the fewest number of iterations but best performance.
+Interestingly, ALNS cannot find improvements.
+Local Search has the fewest iterations but the best performance.
 
 **I30** (UB 499192.32 / LB 9630.72)
 
@@ -226,7 +230,7 @@ Improvement ideas in methodology:
 - Constructor Heuristic: cluster-first-route-second approach
 - Multiple seed candidates
 - Metaheuristics: Tabu Search, Ant Colony, Genetic Algorithm
-- Hyperparamter tuning (grid search, random search)
+- Hyperparamter tuning (grid search, random search) and move all non-tunable parameters to `.env`
 - Hybrid solution
 
 Improvement ideas in implementation:

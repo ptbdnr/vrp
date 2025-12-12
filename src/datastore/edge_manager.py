@@ -34,6 +34,10 @@ class EdgeManager:
 
     def is_edge_valid(self, node_from: Node, node_to: Node) -> bool:
         """Check if an edge between two nodes is valid."""
+        if node_from.id == 0 or node_to.id == 0:
+            return True  # Allow leaving depot, and finishing at last node
+        if node_from.id == len(self.nodes) - 1:
+            return node_to.id == 0  # Allow return to depot only from last node
         if self.respect_even_to_odd_travel_constraint:
             n = len(self.nodes)
             # traveling form node $𝑖 ∈ 𝑁  \ {0, 𝑛 + 1}$ to node $𝑗 ∈ 𝑁 \ {0, 𝑛 + 1}$ is forbidden
@@ -86,7 +90,10 @@ class EdgeManager:
 
         if sort_by_distance:
             distance_manager = distance_manager or EuclidianDistanceManager(logger=self.logger)
-            candidates.sort(key=lambda node: distance_manager.get_distance(self.nodes[node_id], node))
+            candidates.sort(
+                key=lambda node: distance_manager.get_distance(self.nodes[node_id], node),
+                reverse=False,  # closest first
+            )
 
         if max_neighbors is not None:
             return candidates[:max_neighbors]

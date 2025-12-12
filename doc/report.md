@@ -2,7 +2,7 @@
 
 ## 1. Summary
 
-This document outlines a solution approach to the "problem" (see README.md). First, we establish lower and upper bounds to frame solution quality, then generate feasible routes via construction heuristics. Next, iterative improvements leverage neighbourhood operators used by local search, simulated annealing (SA), and adaptive large neighbourhood search (ALNS). SA and ALNS can escape local optima. ALNS is implemented with the `alns` package (https://pypi.org/project/alns/). A monitoring and reporting layer tracks progress.
+This document outlines a solution approach to the "problem" (see README.md). First, we establish lower and upper bounds to frame solution quality, then generate feasible routes via construction heuristics. Next, iterative improvements leverage neighbourhood operators used by local search, simulated annealing (SA), and adaptive large neighbourhood search (ALNS). SA and ALNS can escape local optima. ALNS is implemented with the `alns` package ([link](https://pypi.org/project/alns/)). A monitoring and reporting layer tracks progress.
 
 Numerical results are presented. Notably, within 10 seconds all implementations can provide a feasible solution. Surprisingly, greedy local search often yields the best solution identified.
 

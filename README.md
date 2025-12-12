@@ -57,6 +57,7 @@ Delta Value: 12.38
 * there is always a feasible solution (to validate)
 * undirected distances, the distance between any two nodes is symetric, i.e. $d_{ij} = d_{ji}$
 * the basic problem can be deployed on arbitrary hardware, i.e. no constraints on memory and compute.
+* the distance between the last terminal nodes is 0 (and not the euclidean distance value), this is support a cannonical TSP loop construct
 
 ## Observations
 
@@ -86,6 +87,9 @@ Delta Value: 12.38
 poetry add {package_name}
 # install packages
 poetry istall
+# create your .env file
+cp template_env .env
+# update content of .env
 # run Python in terminal
 poetry run python src/main.py
 # VSCode >Python: Select Interpreter, run code below and enter to path

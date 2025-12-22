@@ -161,22 +161,28 @@ Available datasets have 20, 30, 40, 50, and 60 nodes. Deterministic seeding was 
 
 All solutions in this comparison are initialized from the same random.
 
+The best found route per dataset and algorithm is available in the file: `/results/{dataset_id}/{improver_algorithm}.txt`.
+
 The table below documents the performance metrics and characteristics of various algorithmic approaches.
 
-| dataset_id   | improver algorithm         | iteration # |   best value |
+| dataset_id   | improver_algorithm         | iteration # |   best value |
 |--------------|----------------------------|-------------|--------------|
 | i20          | LocalSearchImprover        |          83 |     37869.40 |
 | i20          | SimulatedAnnealingImprover |         580 |     76782.70 |
 | i20          | ALNSWrapper                |        9193 |    156641.30 |
+|--------------|----------------------------|-------------|--------------|
 | i30          | LocalSearchImprover        |         128 |     85071.20 |
 | i30          | SimulatedAnnealingImprover |         667 |    162599.40 |
 | i30          | ALNSWrapper                |        5290 |    119393.10 |
+|--------------|----------------------------|-------------|--------------|
 | i40          | LocalSearchImprover        |         169 |     95027.20 |
 | i40          | SimulatedAnnealingImprover |         696 |    255312.20 |
 | i40          | ALNSWrapper                |        3561 |    182828.10 |
+|--------------|----------------------------|-------------|--------------|
 | i50          | LocalSearchImprover        |         209 |    222911.30 |
 | i50          | SimulatedAnnealingImprover |         671 |    488540.90 |
 | i50          | ALNSWrapper                |        2441 |    326439.40 |
+|--------------|----------------------------|-------------|--------------|
 | i60          | LocalSearchImprover        |         238 |    243774.00 |
 | i60          | SimulatedAnnealingImprover |         680 |    638195.30 |
 | i60          | ALNSWrapper                |        1786 |    295738.60 |

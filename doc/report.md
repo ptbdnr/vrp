@@ -159,46 +159,68 @@ Available datasets have 20, 30, 40, 50, and 60 nodes. Deterministic seeding was 
 
 ### 5.3 Numerical Results
 
-All solutions start from the same seed, the graphs show the output after the first iteration of search, which may already include an identified improvement over the seed solution.
+All solutions in this comparison are initialized from the same random.
+
+The table below documents the performance metrics and characteristics of various algorithmic approaches.
+
+| dataset_id   | improver algorithm         | iteration # |   best value |
+|--------------|----------------------------|-------------|--------------|
+| i20          | LocalSearchImprover        |          83 |     37869.40 |
+| i20          | SimulatedAnnealingImprover |         580 |     76782.70 |
+| i20          | ALNSWrapper                |        9193 |    156641.30 |
+| i30          | LocalSearchImprover        |         128 |     85071.20 |
+| i30          | SimulatedAnnealingImprover |         667 |    162599.40 |
+| i30          | ALNSWrapper                |        5290 |    119393.10 |
+| i40          | LocalSearchImprover        |         169 |     95027.20 |
+| i40          | SimulatedAnnealingImprover |         696 |    255312.20 |
+| i40          | ALNSWrapper                |        3561 |    182828.10 |
+| i50          | LocalSearchImprover        |         209 |    222911.30 |
+| i50          | SimulatedAnnealingImprover |         671 |    488540.90 |
+| i50          | ALNSWrapper                |        2441 |    326439.40 |
+| i60          | LocalSearchImprover        |         238 |    243774.00 |
+| i60          | SimulatedAnnealingImprover |         680 |    638195.30 |
+| i60          | ALNSWrapper                |        1786 |    295738.60 |
+
+The following graphs show the output after the first iteration of search, which may already include an identified improvement over the seed solution.
 
 **I20** (UB 231132.00 / LB 9517.20)
 
-<img src="./results/i20/LocalSearchImprover_iter.png" alt="LS" width="30%"/>
-<img src="./results/i20/SimulatedAnnealingImprover_iter.png" alt="SA" width="30%"/>
-<img src="./results/i20/ALNSWrapper_iter.png" alt="ALNS" width="30%"/>
+<img src="./results/i20/LocalSearchImprover_iter.png" alt="LS" width="90%"/>
+<img src="./results/i20/SimulatedAnnealingImprover_iter.png" alt="SA" width="90%"/>
+<img src="./results/i20/ALNSWrapper_iter.png" alt="ALNS" width="90%"/>
 
 Interestingly, ALNS cannot find improvements.
 Local Search has the fewest iterations but the best performance.
 
 **I30** (UB 499192.32 / LB 9630.72)
 
-<img src="./results/i30/LocalSearchImprover_iter.png" alt="LS" width="30%"/>
-<img src="./results/i30/SimulatedAnnealingImprover_iter.png" alt="SA" width="30%"/>
-<img src="./results/i30/ALNSWrapper_iter.png" alt="ALNS" width="30%"/>
+<img src="./results/i30/LocalSearchImprover_iter.png" alt="LS" width="90%"/>
+<img src="./results/i30/SimulatedAnnealingImprover_iter.png" alt="SA" width="90%"/>
+<img src="./results/i30/ALNSWrapper_iter.png" alt="ALNS" width="90%"/>
 
 Note that Local Search has the fewest number of iterations but best performance.
 
 **I40** (UB 522144.00 / LB 13171.19)
 
-<img src="./results/i40/LocalSearchImprover_iter.png" alt="LS" width="30%"/>
-<img src="./results/i40/SimulatedAnnealingImprover_iter.png" alt="SA" width="30%"/>
-<img src="./results/i40/ALNSWrapper_iter.png" alt="ALNS" width="30%"/>
+<img src="./results/i40/LocalSearchImprover_iter.png" alt="LS" width="90%"/>
+<img src="./results/i40/SimulatedAnnealingImprover_iter.png" alt="SA" width="90%"/>
+<img src="./results/i40/ALNSWrapper_iter.png" alt="ALNS" width="90%"/>
 
 Note that Local Search has the fewest number of iterations but best performance.
 
 **I50** (UB 863977.92 / LB 10093.20)
 
-<img src="./results/i50/LocalSearchImprover_iter.png" alt="LS" width="30%"/>
-<img src="./results/i50/SimulatedAnnealingImprover_iter.png" alt="SA" width="30%"/>
-<img src="./results/i50/ALNSWrapper_iter.png" alt="ALNS" width="30%"/>
+<img src="./results/i50/LocalSearchImprover_iter.png" alt="LS" width="90%"/>
+<img src="./results/i50/SimulatedAnnealingImprover_iter.png" alt="SA" width="90%"/>
+<img src="./results/i50/ALNSWrapper_iter.png" alt="ALNS" width="90%"/>
 
 Note that Local Search has the fewest number of iterations but best performance.
 
 **I60** (UB 1022151.22 / LB 2397.54 )
 
-<img src="./results/i60/LocalSearchImprover_iter.png" alt="LS" width="30%"/>
-<img src="./results/i60/SimulatedAnnealingImprover_iter.png" alt="SA" width="30%"/>
-<img src="./results/i60/ALNSWrapper_iter.png" alt="ALNS" width="30%"/>
+<img src="./results/i60/LocalSearchImprover_iter.png" alt="LS" width="90%"/>
+<img src="./results/i60/SimulatedAnnealingImprover_iter.png" alt="SA" width="90%"/>
+<img src="./results/i60/ALNSWrapper_iter.png" alt="ALNS" width="90%"/>
 
 Note that Local Search has the fewest number of iterations but best performance.
 

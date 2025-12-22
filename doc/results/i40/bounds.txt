@@ -1,0 +1,2 @@
+Upper bound: 522144.0
+Lower bound: 13171.199999999999
